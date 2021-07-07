@@ -1,59 +1,55 @@
 import { HomePage } from './pages/homepage/homepage.component';
-import {Route ,Switch} from 'react-router-dom';
+import { Route, Switch,Redirect } from 'react-router-dom';
 import Shop from './pages/shop/shop.component';
 import './App.css'
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up';
-import {auth , createUserProfileDocument} from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import React from 'react';
-
-
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.actions';
 class App extends React.Component {
- 
-  constructor(){
-    super();
-    this.state = {
-      currentUser : null
-    }
-  }
 
   unsubscribeFromAuth = null;
-  componentDidMount(){
+  componentDidMount() {
+    const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if(userAuth){
+      if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapShot =>{
-          this.setState({
-            currentUser:{
-              id:snapShot.id,
-              ...snapShot.data()
-            }
+        userRef.onSnapshot(snapShot => {
+          setCurrentUser({
+              id: snapShot.id,
+              ...snapShot.data() 
           })
         });
-        
-        
       }
-      else
-      this.setState({currentUser:userAuth},()=>console.log(this.state));
+      setCurrentUser(userAuth);
     });
   };
-  
-  componentWillUnmount(){
+
+  componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
-  
-    render(){
-  
-      return (
-        <div className = 'body' >
-          <Header className='header'currentUser = {this.state.currentUser} />
-          <Switch>
-            <Route exact path="/" component={HomePage}/>
-            <Route exact path="/shop" component={Shop}/>
-            <Route exact path='/signin' component={SignInAndSignUpPage} />
-          </Switch>
-        </div>
-  );
-}}
 
-export default App;
+  render() {
+
+    return (
+      <div className='body' >
+        <Header className='header' />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/shop" component={Shop} />
+          <Route exact path='/signin' render = {()=> this.props.currentUser ?(<Redirect to='/'/>) : (<SignInAndSignUpPage/>)}/>
+        </Switch>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps =  ({user}) =>({
+  currentUser : user.currentUser
+});
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(App);
