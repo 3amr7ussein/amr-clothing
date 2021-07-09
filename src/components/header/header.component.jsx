@@ -19,10 +19,10 @@ const Header = ({ currentUser , hideCart }) => (
             </div> :
                 <Link className='option' to='/signin'> Sign In</Link>}
             
-            <Link className='option' to='/checkout' ><CartIcon/> </Link>
+            <div className='option' ><CartIcon/> </div>
         </div>
         {hideCart? null:<CartDropdown /> }
-        
+    
     </div>
 );
 
