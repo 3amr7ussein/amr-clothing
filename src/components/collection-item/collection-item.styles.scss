@@ -4,7 +4,7 @@
   flex-direction: column;
   height: 350px;
   align-items: center;
-
+position: relative;
   .image{
       height:95%;
       width:100%;
@@ -23,5 +23,20 @@
         margin-bottom: 15px;
     }
     }
-
+    .custom-button{
+        position:absolute;
+        top:255px;
+        opacity:0.7;
+        width:80%;
+        display: none;
+    }
+    &:hover{
+        .image{
+            opacity: 0.8;
+        }
+        .custom-button{
+            opacity: 0.85;
+            display: flex;
+        }
+    }
 }
