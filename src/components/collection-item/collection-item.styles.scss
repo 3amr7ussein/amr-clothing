@@ -35,8 +35,13 @@ position: relative;
             opacity: 0.8;
         }
         .custom-button{
+            
             opacity: 0.85;
             display: flex;
+            &:hover{
+                box-shadow: 0 0 4px 3px  rgb(47, 61, 250);
+            }
+            
         }
     }
 }
