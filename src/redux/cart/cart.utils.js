@@ -15,7 +15,18 @@ export const addItemToCart = (cartItems,cartItemToAdd)=>{
     
 }
 
-export const clearItem = (cartItems,itemToRemove)=>{
-    const newCartItems = cartItems.filter(item=>item.name!==itemToRemove.name);
+export const clearItem = (cartItems,itemToClear)=>{
+    const newCartItems = cartItems.filter(item=>(item.id!==itemToClear.id));
     return newCartItems;
+}
+export const removeItem =(cartItems,itemToRemove)=>{
+    const exsistingCartItem = cartItems.find(
+        cartItem=>cartItem.id===itemToRemove.id
+    )
+    if(exsistingCartItem.quantity===1)
+    return cartItems.filter(item=>item.id!==exsistingCartItem.id)
+
+    return cartItems.map(item=>
+        item.id===itemToRemove.id ? {...item,quantity:item.quantity-1} : item
+    );
 }
