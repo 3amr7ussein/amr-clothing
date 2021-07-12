@@ -14,3 +14,8 @@ export const addItemToCart = (cartItems,cartItemToAdd)=>{
         
     
 }
+
+export const clearItem = (cartItems,itemToRemove)=>{
+    const newCartItems = cartItems.filter(item=>item.name!==itemToRemove.name);
+    return newCartItems;
+}
