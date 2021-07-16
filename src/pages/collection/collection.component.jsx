@@ -5,7 +5,6 @@ import { selectCollection } from '../../redux/shop/shop.selector';
 import { connect } from 'react-redux';
 const CollectionPage = ({ collection, match }) => {
     const {items,title} = collection
-    //console.log('hello' ,collection,match.params.categoryId)
     return (
         <div className='collection-page'>
             <h2 className='title'>{title}</h2>
@@ -19,6 +18,6 @@ const CollectionPage = ({ collection, match }) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    collection: selectCollection(ownProps.match.params.categoryId)(state)
+    collection: selectCollection(ownProps.match.params.collectionId)(state)
 });
 export default connect(mapStateToProps)(CollectionPage);
